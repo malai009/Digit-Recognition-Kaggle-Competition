@@ -9,28 +9,6 @@ from tensorflow.keras.layers import Dropout
 
 train_path = os.path.join("train.csv")
 train = pd.read_csv(train_path)
-## Visualization of data
-# j = 0
-# for j in range(10):
-#     img = train.iloc[j,1:].values.reshape(28,28)
-#     plt.imshow(img, cmap = "gray")
-#     plt.title(f"Label: {train.iloc[j, 0]}")
-#     plt.axis("off")
-#     plt.show()
-
-## Preprocessing of data
-# Normalizing pixel values cos, NN loves [0,1], faster training, better gradients
-# And reshaping the images
-# def norm(train):
-#     imgs = []
-#     for i, _ in enumerate (train):
-#         pixel = train.iloc[i, :]/255
-        #imgs.append(pixel.values.reshape(28, 28))
-        # plt.imshow(img, cmap = "gray")
-        # plt.title(f"Label: {train.iloc[i, 0]}")
-        # plt.axis("off")
-        # plt.show()
-        # return pixel
 
 ## Splitting Training data into training and validation
 # Standard 80% of data for training and 20% of data for validation
@@ -40,16 +18,10 @@ x_train, x_val, y_train, y_val = train_test_split(x, y, test_size=0.2,
                                                   random_state= 42, shuffle = True)
 
 #random_state= 42 is for preserving the splitting over multiple runs of code. 42 could be any no.
-# print(x_train.shape)
-# print(y_train.shape)
-# print(x_val.shape)
-# print(y_val.shape)
 
 #Normalization
 x_val_norm = (x_val)/255
-print("Validation data size : ", x_val_norm.shape)
 x_train_norm = (x_train)/255
-print("Training data size : ", x_train_norm.shape)
 
 ## Using Tensorflow model, a baseline MLP
 model = Sequential([Dense(256, activation = "relu", input_shape = (784, )), 
@@ -98,10 +70,6 @@ plt.ylabel("Loss")
 plt.legend()
 plt.show()
 
-
-## Saving the model
-#model.save("mnist_model.h5")
-
 ## Final test on Test set
 #importing test set
 test_path = os.path.join("test.csv")
@@ -115,3 +83,4 @@ y_pred = preds.argmax(axis = 1)
 image_IDs = range(1, len(y_pred)+ 1)
 submission = pd.DataFrame({"Imageid": image_IDs, "Label": y_pred})
 submission.to_csv("submission_Tensorflow.csv", index=False)
+
